@@ -1,0 +1,19 @@
+# Dockerfile.airflow
+
+FROM apache/airflow:2.9.1
+
+# Passer en root pour installer des dépendances système
+USER root
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Revenir à l'utilisateur airflow
+USER airflow
+
+# Copier le fichier requirements.txt dans le conteneur
+COPY requirements.txt /requirements.txt
+
+# Installer les packages Python du requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt

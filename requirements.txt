@@ -1,0 +1,11 @@
+# requirements.txt
+apache-airflow-providers-postgres
+pandas
+psycopg2-binary
+requests
+sqlalchemy
+numpy
+# Tu peux aussi ajouter d'autres librairies utiles :
+# numpy
+# sqlalchemy
+# apache-airflow-providers-google
