@@ -8,31 +8,39 @@ services:
     image: postgres:15
     container_name: postgres
     environment:
-      POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: airflow
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB_AIRFLOW}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - data_platform
 
+  
   # ==========================
-  # 🧠 PGADMIN
+  # 🧠 PGADMIN (Configuration par fichier généré)
   # ==========================
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      # Indique à PgAdmin d'utiliser le fichier monté
+      PGADMIN_SETUP_SERVER_JSON_FILE: /pgadmin4/servers.json
     ports:
-      - "5050:80"
+      - "${PGADMIN_PORT}:80"
+    volumes:
+      # L'utilisateur doit d'abord exécuter le script Python pour créer ce fichier
+      - ./pgadmin_servers.json:/pgadmin4/servers.json
     depends_on:
       - postgres
     networks:
       - data_platform
+    # Le champ 'command' est complètement retiré pour utiliser l'entrée par défaut
+    
 
   # ==========================
   # 🪶 AIRFLOW - WEBSERVER
@@ -45,8 +53,8 @@ services:
     container_name: airflow-webserver
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
-      AIRFLOW__CORE__FERNET_KEY: "2I7ZQJKF7T1Q4fjYlq6hZkM1U1_6fE0tVgE7vP1zJkA="
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_DB_CONN}
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY}
       AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: UTC
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
     volumes:
@@ -54,7 +62,7 @@ services:
       - airflow_logs:/opt/airflow/logs
       - airflow_plugins:/opt/airflow/plugins
     ports:
-      - "8080:8080"
+      - "${AIRFLOW_PORT}:8080"
     depends_on:
       - postgres
     networks:
@@ -62,17 +70,18 @@ services:
     entrypoint: /bin/bash
     command: -c "
       airflow db init &&
-      airflow users create --username admin --password admin --firstname Airflow --lastname Admin --role Admin --email admin@example.com &&
+      airflow users create --username ${AIRFLOW_USER} --password ${AIRFLOW_PASSWORD} --firstname Airflow --lastname Admin --role Admin --email ${AIRFLOW_EMAIL} &&
       airflow connections delete 'postgres_default' || true &&
       airflow connections add 'postgres_default' \
         --conn-type 'postgres' \
-        --conn-login 'airflow' \
-        --conn-password 'airflow' \
-        --conn-host 'postgres' \
-        --conn-port '5432' \
-        --conn-schema 'airflow' &&
+        --conn-login '${POSTGRES_USER}' \
+        --conn-password '${POSTGRES_PASSWORD}' \
+        --conn-host '${POSTGRES_HOST}' \
+        --conn-port '${POSTGRES_PORT}' \
+        --conn-schema '${POSTGRES_DB_AIRFLOW}' &&
       exec airflow webserver
       "
+
 
   # ==========================
   # 🪶 AIRFLOW - SCHEDULER
@@ -85,8 +94,8 @@ services:
     container_name: airflow-scheduler
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
-      AIRFLOW__CORE__FERNET_KEY: "2I7ZQJKF7T1Q4fjYlq6hZkM1U1_6fE0tVgE7vP1zJkA="
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_DB_CONN}
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY}
       AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: UTC
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
     volumes:
@@ -101,6 +110,7 @@ services:
     entrypoint: /bin/bash
     command: -c "airflow scheduler"
 
+
   # ==========================
   # 📊 SUPERSET
   # ==========================
@@ -111,11 +121,10 @@ services:
     depends_on:
       - postgres
     environment:
-      SUPERSET_SECRET_KEY: "supersetsecret123"
-      # Connexion à PostgreSQL au lieu de SQLite
-      SUPERSET_DATABASE_URI: postgresql+psycopg2://airflow:airflow@postgres:5432/superset
+      SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY}
+      SUPERSET_DATABASE_URI: ${SUPERSET_DB_CONN}
     ports:
-      - "8088:8088"
+      - "${SUPERSET_PORT}:8088"
     volumes:
       - superset_home:/app/superset_home
       - superset_logs:/app/superset_logs
@@ -123,7 +132,7 @@ services:
       - data_platform
     command: >
       /bin/bash -c "superset db upgrade &&
-                    superset fab create-admin --username admin --password admin --firstname Admin --lastname User --email admin@example.com &&
+                    superset fab create-admin --username ${SUPERSET_USER} --password ${SUPERSET_PASSWORD} --firstname Admin --lastname User --email ${SUPERSET_EMAIL} &&
                     superset init &&
                     superset run -h 0.0.0.0 -p 8088"
 

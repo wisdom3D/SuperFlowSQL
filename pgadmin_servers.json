@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "SuperFlowSQL - PostgreSQL",
+            "Group": "SuperFlowSQL Stack",
+            "Port": 5432,
+            "Username": "airflow",
+            "Host": "postgres",
+            "SSLMode": "disable",
+            "MaintenanceDB": "airflow"
+        }
+    }
+}
