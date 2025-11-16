@@ -1,4 +1,4 @@
-# 🚀 Data Platform - SuperFlowSQL
+# Data Platform - SuperFlowSQL
 
 Une plateforme de data orchestration complète basée sur **Apache Airflow**, **PostgreSQL**, **PgAdmin** et **Apache Superset**. Cette solution permet d'automatiser vos pipelines de données et de les monitorer en temps réel.
 
@@ -9,19 +9,19 @@ Une plateforme de data orchestration complète basée sur **Apache Airflow**, **
 │          Data Platform Architecture              │
 ├──────────────────────────────────────────────────┤
 │                                                  │
-│  🌐 Airflow Webserver (Port 8080)               │
+│   Airflow Webserver (Port 8080)               │
 │     └─ Orchestration & Monitoring               │
 │                                                  │
-│  ⚙️  Airflow Scheduler                          │
+│    Airflow Scheduler                          │
 │     └─ DAGs Execution                           │
 │                                                  │
-│  📊 PostgreSQL (Port 5432)                      │
+│   PostgreSQL (Port 5432)                      │
 │     └─ Data Storage & Airflow Metadata          │
 │                                                  │
-│  🔧 PgAdmin (Port 5050)                         │
+│   PgAdmin (Port 5050)                         │
 │     └─ Database Management UI                   │
 │                                                  │
-│  📈 Apache Superset (Port 8088)                 │
+│   Apache Superset (Port 8088)                 │
 │     └─ Data Visualization & Analytics           │
 │                                                  │
 └──────────────────────────────────────────────────┘
@@ -46,7 +46,7 @@ Une plateforme de data orchestration complète basée sur **Apache Airflow**, **
 Clonez ou naviguez vers le répertoire du projet :
 
 ```bash
-cd data-platform
+cd SuperFlowSQL
 ```
 
 ### 2️⃣ modifier le fichier `.env`
@@ -57,6 +57,10 @@ cd data-platform
 ### 3️⃣ Générer la configuration PgAdmin
 
 Avant de lancer les conteneurs, générez le fichier de configuration PgAdmin :
+
+```bash
+pip install python-dotenv
+```
 
 ```bash
 python generate_pgadmin_config.py
