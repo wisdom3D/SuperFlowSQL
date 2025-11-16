@@ -1,8 +1,11 @@
 version: "3.9"
+  # =======================================================================================================================#
+  # SuperFlowSQL  
+  # =======================================================================================================================#
 
 services:
   # ==========================
-  # 🐘 POSTGRESQL
+  # POSTGRESQL
   # ==========================
   postgres:
     image: postgres:15
@@ -20,7 +23,7 @@ services:
 
   
   # ==========================
-  # 🧠 PGADMIN (Configuration par fichier généré)
+  #  PGADMIN (Configuration par fichier généré)
   # ==========================
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -43,7 +46,7 @@ services:
     
 
   # ==========================
-  # 🪶 AIRFLOW - WEBSERVER
+  #  AIRFLOW - WEBSERVER
   # ==========================
   airflow-webserver:
     build:
@@ -84,7 +87,7 @@ services:
 
 
   # ==========================
-  # 🪶 AIRFLOW - SCHEDULER
+  #  AIRFLOW - SCHEDULER
   # ==========================
   airflow-scheduler:
     build:
@@ -112,7 +115,7 @@ services:
 
 
   # ==========================
-  # 📊 SUPERSET
+  #  SUPERSET
   # ==========================
   superset:
     image: apache/superset:3.0.2
@@ -137,7 +140,7 @@ services:
                     superset run -h 0.0.0.0 -p 8088"
 
 # ==========================
-# 🔗 NETWORKS & VOLUMES
+#  NETWORKS & VOLUMES
 # ==========================
 networks:
   data_platform:

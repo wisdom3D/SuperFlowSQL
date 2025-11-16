@@ -30,9 +30,6 @@ servers_data = {
 }
 
 # --- Écriture du fichier ---
-# Nous allons écrire ce fichier dans le dossier 'config' ou directement à la racine
-# selon la structure que vous préférez. Je vais le mettre à la racine pour la simplicité
-# et le nommer pgadmin_servers.json comme précédemment.
 output_file = "pgadmin_servers.json"
 
 try:

@@ -1,3 +1,6 @@
+#----------------------------------------------
+# Exemple de DAG Airflow : Génération de données aléatoires avec Pandas et chargement dans PostgreSQL
+#----------------------------------------------
 from __future__ import annotations
 
 import pendulum
