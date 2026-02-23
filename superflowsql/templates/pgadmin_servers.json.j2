@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "SuperFlowSQL - PostgreSQL",
+            "Group": "SuperFlowSQL Stack",
+            "Port": {{ postgres_port }},
+            "Username": "{{ postgres_user }}",
+            "Host": "{{ postgres_host }}",
+            "SSLMode": "disable",
+            "MaintenanceDB": "{{ postgres_db }}"
+        }
+    }
+}

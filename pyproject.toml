@@ -1,0 +1,77 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "superflowsql"
+version = "0.1.0"
+description = "The CLI that bootstraps and manages your Airflow + PostgreSQL + Superset + PgAdmin stack in minutes."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [
+    { name = "SuperFlowSQL" },
+]
+keywords = [
+    "airflow",
+    "postgresql",
+    "superset",
+    "pgadmin",
+    "data-engineering",
+    "data-pipeline",
+    "orchestration",
+    "docker",
+    "cli",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "click>=8.0",
+    "rich>=13.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "jinja2>=3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1",
+]
+
+[project.scripts]
+superflowsql = "superflowsql.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/superflowsql/superflowsql"
+Documentation = "https://github.com/superflowsql/superflowsql"
+Repository = "https://github.com/superflowsql/superflowsql"
+
+[tool.hatch.build.targets.wheel]
+packages = ["superflowsql"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

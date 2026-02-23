@@ -1,0 +1,12 @@
+instructions.md
+README_SAMPLE.md
+research.md
+
+.next
+node_modules
+dist
+
+__pycache__
+
+.env
+*.log
